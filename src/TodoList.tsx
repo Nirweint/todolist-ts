@@ -4,7 +4,7 @@ import {TaskType} from "./App";
 
 type TodoListPropsType = {
     title: string
-    tasks: Array<TaskType>
+    tasks: Array<TaskType> // TaskType []
 }
 
 export const TodoList = (props: TodoListPropsType) => {

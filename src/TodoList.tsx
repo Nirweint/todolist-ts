@@ -3,11 +3,11 @@ import {TaskType} from "./App";
 
 
 type TodoListPropsType = {
-    title: string,
-    tasks: Array<TaskType>,
+    title: string
+    tasks: Array<TaskType>
 }
 
-const TodoList = (props: TodoListPropsType) => {
+export const TodoList = (props: TodoListPropsType) => {
     return (
         <div className="TodoList">
             <h3>{props.title}</h3>
@@ -28,5 +28,3 @@ const TodoList = (props: TodoListPropsType) => {
         </div>
     );
 };
-
-export default TodoList;

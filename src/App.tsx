@@ -1,14 +1,14 @@
 import React from 'react';
 import './App.css';
-import TodoList from "./TodoList";
+import {TodoList} from "./TodoList";
 
 export type TaskType = {
-    id: number,
-    title: string,
-    isDone: boolean,
+    id: number
+    title: string
+    isDone: boolean
 }
 
-function App() {
+export function App() {
 
     const task_1: Array<TaskType> = [ // TaskType []
         {id: 1, title: "HTML", isDone: true},
@@ -35,5 +35,3 @@ function App() {
         </div>
     );
 }
-
-export default App;

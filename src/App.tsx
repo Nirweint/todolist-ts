@@ -51,7 +51,7 @@ export function App() {
 
     // UI:
 
-    let tasksForRender = task;
+    let tasksForRender: Array<TaskType> = task;
 
     if (filter === "active") {
         tasksForRender = task.filter(t => t.isDone === false)

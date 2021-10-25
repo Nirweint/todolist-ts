@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType, TaskType} from "./App";
 
 type TodoListPropsType = {
@@ -13,31 +13,38 @@ export const TodoList = (props: TodoListPropsType) => {
 
     const [title, setTitle] = useState<string>("")
 
-    const tasksJSXElements = props.tasks.map(task => {
-        return (
-            <li key={task.id}>
-                <input type="checkbox" checked={task.isDone}/>
-                <span>{task.title}</span>
-                <button onClick={() => props.removeTask(task.id)}>x</button>
-            </li>
-        )
-    })
-
     const filterTasksAll = () => props.changeFilter('all')
     const filterTasksActive = () => props.changeFilter('active')
     const filterTasksCompleted = () => props.changeFilter('completed')
 
     const addTask = () => {
-        if (title) {
-            props.addTask(title)
+        const trimTitle = title.trim()
+        if (trimTitle) {
+            props.addTask(trimTitle)
             setTitle("")
         }
     }
-
-    const changeValue = (event: ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.currentTarget.value)
+    const AddTaskOnEnter = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            addTask()
+        }
+    }
+    const changeTitleValue = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
     }
 
+
+    const tasksJSXElements = props.tasks.map(task => {
+        const removeTask = () => props.removeTask(task.id)
+
+        return (
+            <li key={task.id}>
+                <input type="checkbox" checked={task.isDone}/>
+                <span>{task.title}</span>
+                <button onClick={removeTask}>x</button>
+            </li>
+        )
+    })
 
     return (
         <div className="todoList">
@@ -46,7 +53,8 @@ export const TodoList = (props: TodoListPropsType) => {
                 <input
                     value={title}
                     placeholder="Enter your task..."
-                    onChange={changeValue}
+                    onChange={changeTitleValue}
+                    onKeyPress={AddTaskOnEnter}
                 />
                 <button onClick={addTask}>+</button>
             </div>

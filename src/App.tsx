@@ -21,44 +21,68 @@ export function App() {
         {id: v1(), title: "Redux", isDone: false},
     ];
 
-    const [task, setTasks] = useState<Array<TaskType>>(tasksForState)
+    const [tasks, setTasks] = useState<Array<TaskType>>(tasksForState)
     const [filter, setFilter] = useState<FilterValuesType>("all")
 
     const removeTask = (taskId: string) => {
-        setTasks(task.filter(t => t.id !== taskId))
+        setTasks(tasks.filter(t => t.id !== taskId))
     }
-
     const changeFilter = (filter: FilterValuesType) => {
         setFilter(filter)
     }
-
     const addTask = (title: string) => {
         const newTask: TaskType = {
             id: v1(),
             title,
             isDone: false,
         }
-        setTasks([newTask, ...task])
+        setTasks([newTask, ...tasks])
     }
+    const changeTaskStatus = (taskId: string, isDone: boolean) => {
+        const updatedTask = tasks.map(t => t.id === taskId ? {...t, isDone} : t)
+        setTasks(updatedTask)
+    }
+    // const changeTaskStatus = (taskId: string) => {
+    //     const updatedTasks = tasks.map(t => {
+    //         if (t.id === taskId) {
+    //             return {...t, isDone: !t.isDone}
+    //         }
+    //         return t
+    //     })
+    //     setTasks(updatedTasks)
+    // }
+
+    // const changeTaskStatus = (taskId: string, isDone: boolean) => {
+    //     const updatedTasks = tasks.map(t => {
+    //         if (t.id === taskId) {
+    //             return {...t, isDone: isDone}
+    //         }
+    //         return t
+    //     })
+    //     setTasks(updatedTasks)
+    // }
+
+
 
     // UI:
-    let tasksForRender: Array<TaskType> = task;
-
+    let tasksForRender: Array<TaskType> = tasks;
     if (filter === "active") {
-        tasksForRender = task.filter(t => !t.isDone)
+        tasksForRender = tasks.filter(t => !t.isDone)
     }
     if (filter === "completed") {
-        tasksForRender = task.filter(t => t.isDone)
+        tasksForRender = tasks.filter(t => t.isDone)
     }
 
     return (
         <div className="App">
             <TodoList
+                filter={filter}
                 title={"What to learn"}
                 tasks={tasksForRender}
                 removeTask={removeTask}
                 changeFilter={changeFilter}
                 addTask={addTask}
+                changeTaskStatus={changeTaskStatus}
             />
         </div>
     );

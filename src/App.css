@@ -20,3 +20,20 @@
 .todoListUl li {
   list-style-type: none;
 }
+
+.active-filter {
+  background-color: aquamarine;
+}
+
+.is-done {
+  opacity: 0.5;
+}
+
+.error {
+  border: red 1px solid;
+  outline: none;
+}
+
+.error-message {
+  color: red;
+}

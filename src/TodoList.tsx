@@ -2,27 +2,29 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType, TaskType} from "./App";
 
 type TodoListPropsType = {
+    id: string
     title: string
     filter: FilterValuesType
     tasks: Array<TaskType> // TaskType []
-    removeTask: (taskId: string) => void
-    changeFilter: (filter: FilterValuesType) => void
-    addTask: (title: string) => void
-    changeTaskStatus: (taskId: string, isDone: boolean) => void
+    removeTask: (taskId: string, todoListId: string) => void
+    addTask: (title: string, todoListId: string) => void
+    changeFilter: (filter: FilterValuesType, todoListId: string) => void
+    changeTaskStatus: (taskId: string, isDone: boolean, todoListId: string) => void
+    removeTodoList: (todoListId: string) => void
 }
 export const TodoList = (props: TodoListPropsType) => {
 
     const [title, setTitle] = useState<string>("")
     const [error, setError] = useState<boolean>(false)
 
-    const filterTasksAll = () => props.changeFilter('all');
-    const filterTasksActive = () => props.changeFilter('active');
-    const filterTasksCompleted = () => props.changeFilter('completed');
+    const filterTasksAll = () => props.changeFilter('all', props.id);
+    const filterTasksActive = () => props.changeFilter('active', props.id);
+    const filterTasksCompleted = () => props.changeFilter('completed', props.id);
 
     const addTaskHandler = () => {
         const trimTitle = title.trim()
         if (trimTitle) {
-            props.addTask(trimTitle)
+            props.addTask(trimTitle, props.id)
         } else {
             setError(true)
         }
@@ -37,6 +39,9 @@ export const TodoList = (props: TodoListPropsType) => {
             addTaskHandler()
         }
     }
+    const removeTodoListHandler = () => {
+        props.removeTodoList(props.id)
+    }
 
     const activeStyleBtnAll = props.filter === "all" ? 'active-filter' : '';
     const activeStyleBtnActive = props.filter === "active" ? 'active-filter' : '';
@@ -45,11 +50,10 @@ export const TodoList = (props: TodoListPropsType) => {
 
 
     const tasksJSXElements = props.tasks.map(task => {
-        const removeTask = () => props.removeTask(task.id)
+        const removeTask = () => props.removeTask(task.id, props.id)
         const changeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            props.changeTaskStatus(task.id, e.currentTarget.checked)
+            props.changeTaskStatus(task.id, e.currentTarget.checked, props.id)
         }
-
         return (
             <li
                 className={task.isDone ? "is-done" : ""}
@@ -68,7 +72,10 @@ export const TodoList = (props: TodoListPropsType) => {
 
     return (
         <div className="todoList">
-            <h3>{props.title}</h3>
+            <div className={"todoListTitle"}>
+                <h3>{props.title}</h3>
+                <button onClick={removeTodoListHandler}>X</button>
+            </div>
             <div>
                 <input
                     className={error ? 'error' : ''}

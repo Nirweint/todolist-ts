@@ -37,3 +37,9 @@
 .error-message {
   color: red;
 }
+
+.todoListTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

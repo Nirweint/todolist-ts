@@ -1,5 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType, TaskType} from "./App";
+import {AddItemForm} from "./components/AddItemForm";
+import {EditableSpan} from "./components/EditableSpan";
 
 type TodoListPropsType = {
     id: string
@@ -11,48 +13,36 @@ type TodoListPropsType = {
     changeFilter: (filter: FilterValuesType, todoListId: string) => void
     changeTaskStatus: (taskId: string, isDone: boolean, todoListId: string) => void
     removeTodoList: (todoListId: string) => void
+    changeTaskTitle: (taskId: string, title: string, todoListId: string) => void
+    changeTodolistTitle: (title: string, todoListId: string) => void
 }
 export const TodoList = (props: TodoListPropsType) => {
 
-    const [title, setTitle] = useState<string>("")
-    const [error, setError] = useState<boolean>(false)
-
+    const addTaskHandler = (title: string) => {
+        props.addTask(title, props.id)
+    }
     const filterTasksAll = () => props.changeFilter('all', props.id);
     const filterTasksActive = () => props.changeFilter('active', props.id);
     const filterTasksCompleted = () => props.changeFilter('completed', props.id);
-
-    const addTaskHandler = () => {
-        const trimTitle = title.trim()
-        if (trimTitle) {
-            props.addTask(trimTitle, props.id)
-        } else {
-            setError(true)
-        }
-        setTitle("")
-    }
-    const changeTitleValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-        setError(false)
-    }
-    const AddTaskOnEnterHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
-            addTaskHandler()
-        }
-    }
     const removeTodoListHandler = () => {
         props.removeTodoList(props.id)
+    };
+    const changeTodolistTitleHandler = (title: string) => {
+        props.changeTodolistTitle(title, props.id)
     }
+
 
     const activeStyleBtnAll = props.filter === "all" ? 'active-filter' : '';
     const activeStyleBtnActive = props.filter === "active" ? 'active-filter' : '';
     const activeStyleBtnCompleted = props.filter === "completed" ? 'active-filter' : '';
-    const errorMessage = error ? <div style={{color: "red"}}>Title is required</div> : null
-
 
     const tasksJSXElements = props.tasks.map(task => {
         const removeTask = () => props.removeTask(task.id, props.id)
         const changeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>) => {
             props.changeTaskStatus(task.id, e.currentTarget.checked, props.id)
+        }
+        const changeTaskTitleHandler = (title: string) => {
+            props.changeTaskTitle(task.id,title,props.id)
         }
         return (
             <li
@@ -64,7 +54,7 @@ export const TodoList = (props: TodoListPropsType) => {
                     type="checkbox"
                     checked={task.isDone}
                 />
-                <span>{task.title}</span>
+                <EditableSpan title={task.title} setNewTitle={changeTaskTitleHandler}/>
                 <button onClick={removeTask}>x</button>
             </li>
         )
@@ -73,20 +63,14 @@ export const TodoList = (props: TodoListPropsType) => {
     return (
         <div className="todoList">
             <div className={"todoListTitle"}>
-                <h3>{props.title}</h3>
+                <h3>
+                    <EditableSpan title={props.title} setNewTitle={changeTodolistTitleHandler}/>
+                </h3>
                 <button onClick={removeTodoListHandler}>X</button>
             </div>
-            <div>
-                <input
-                    className={error ? 'error' : ''}
-                    value={title}
-                    placeholder="Enter your task..."
-                    onChange={changeTitleValueHandler}
-                    onKeyPress={AddTaskOnEnterHandler}
-                />
-                <button onClick={addTaskHandler}>+</button>
-                {errorMessage}
-            </div>
+
+            <AddItemForm addItem={addTaskHandler}/>
+
             <ul className="todoListUl">
                 {tasksJSXElements}
             </ul>

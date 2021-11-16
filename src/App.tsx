@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {TodoList} from "./TodoList";
 import {v1} from "uuid";
+import {AddItemForm} from "./components/AddItemForm";
 
 export type TaskType = {
     id: string
@@ -61,11 +62,17 @@ export function App() {
         setTasks({...tasks, [todoListId]: [newTask, ...tasks[todoListId]]})
     }
     const changeTaskStatus = (taskId: string, isDone: boolean, todoListId: string) => {
-        // const updatedTask = tasks.map(t => t.id === taskId ? {...t, isDone} : t)
         setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === taskId ? {...t, isDone: isDone} : t)})
+    }
+    const changeTaskTitle = (taskId: string, title: string, todoListId: string) => {
+        setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === taskId ? {...t, title} : t)})
     }
     const changeFilter = (filter: FilterValuesType, todoListId: string) => {
         setTodoLists(todoLists.map(tl => tl.id === todoListId ? {...tl, filter: filter} : tl))
+    }
+    const changeTodolistTitle = (title: string, todoListId: string) => {
+        setTodoLists(todoLists.map(tl => tl.id === todoListId ? {...tl, title} : tl))
+
     }
     const removeTodoList = (todoListId: string) => {
         setTodoLists(todoLists.filter(tl => tl.id !== todoListId))
@@ -83,36 +90,36 @@ export function App() {
 
     // UI:
 
-    const todoListsComponents = todoLists.map(tl => {
-
-        let tasksForRender: Array<TaskType> = tasks[tl.id]
-        if (tl.filter === "active") {
-            tasksForRender = tasks[tl.id].filter(t => !t.isDone)
-        }
-        if (tl.filter === "completed") {
-            tasksForRender = tasks[tl.id].filter(t => t.isDone)
-        }
-
-        return (
-            <TodoList
-                key={tl.id}
-                id={tl.id}
-                filter={tl.filter}
-                title={tl.title}
-                tasks={tasksForRender}
-                removeTask={removeTask}
-                addTask={addTask}
-                changeFilter={changeFilter}
-                changeTaskStatus={changeTaskStatus}
-                removeTodoList={removeTodoList}
-            />
-        )
-    })
-
     return (
         <div className="App">
-            <button onClick={() => {addTodoList("fsdfsd")}}>+</button>
-            {todoListsComponents}
+            <AddItemForm addItem={addTodoList}/>
+            {todoLists.map(tl => {
+
+                let tasksForRender: Array<TaskType> = tasks[tl.id]
+                if (tl.filter === "active") {
+                    tasksForRender = tasks[tl.id].filter(t => !t.isDone)
+                }
+                if (tl.filter === "completed") {
+                    tasksForRender = tasks[tl.id].filter(t => t.isDone)
+                }
+
+                return (
+                    <TodoList
+                        key={tl.id}
+                        id={tl.id}
+                        filter={tl.filter}
+                        title={tl.title}
+                        tasks={tasksForRender}
+                        removeTask={removeTask}
+                        addTask={addTask}
+                        changeFilter={changeFilter}
+                        changeTaskStatus={changeTaskStatus}
+                        removeTodoList={removeTodoList}
+                        changeTaskTitle={changeTaskTitle}
+                        changeTodolistTitle={changeTodolistTitle}
+                    />
+                )
+            })}
         </div>
     );
 }

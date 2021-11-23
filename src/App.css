@@ -1,45 +1,45 @@
-.App {
-  padding: 30px;
-  display: flex;
-}
+/*.App {*/
+/*  padding: 30px;*/
+/*  display: flex;*/
+/*}*/
 
-.App > div {
-  margin-right: 50px;
-}
+/*.App > div {*/
+/*  margin-right: 50px;*/
+/*}*/
 
-.todoList {
-  border: 1px solid gray;
-  border-radius: 10px;
-  padding: 20px;
-}
+/*!*.todoList {*!*/
+/*!*  border: 1px solid gray;*!*/
+/*!*  border-radius: 10px;*!*/
+/*!*  padding: 20px;*!*/
+/*!*}*!*/
 
-.todoListUl {
-  padding: 0;
-}
+/*.todoListUl {*/
+/*  padding: 0;*/
+/*}*/
 
-.todoListUl li {
-  list-style-type: none;
-}
+/*.todoListUl li {*/
+/*  list-style-type: none;*/
+/*}*/
 
-.active-filter {
-  background-color: aquamarine;
-}
+/*.active-filter {*/
+/*  background-color: aquamarine;*/
+/*}*/
 
 .is-done {
   opacity: 0.5;
 }
 
-.error {
-  border: red 1px solid;
-  outline: none;
-}
+/*.error {*/
+/*  border: red 1px solid;*/
+/*  outline: none;*/
+/*}*/
 
-.error-message {
-  color: red;
-}
+/*.error-message {*/
+/*  color: red;*/
+/*}*/
 
-.todoListTitle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+/*.todoListTitle {*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  justify-content: space-between;*/
+/*}*/

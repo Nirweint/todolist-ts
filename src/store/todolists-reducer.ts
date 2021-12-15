@@ -31,7 +31,9 @@ export type ActionType =
     | ChangeFilterActionType
 
 
-export const todoListsReducer = (state: Array<TodoListType>, action: ActionType): Array<TodoListType> => {
+let initialState: Array<TodoListType> = []
+
+export const todoListsReducer = (state: Array<TodoListType> = initialState, action: ActionType): Array<TodoListType> => {
     switch (action.type) {
         case "REMOVE-TODOLIST":
             return state.filter(tl => tl.id !== action.todolistID)
